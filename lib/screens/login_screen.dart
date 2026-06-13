@@ -1,67 +1,122 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        // Fondo degradado moderno
+    return CupertinoPageScaffold(
+      child: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xff1e3c72), const Color(0xff2a5298)],
+            colors: [Color(0xffeaf4ff), Color(0xfff7f7fb)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Center(
+        child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24.0),
-            child: Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 32.0),
+            padding: const EdgeInsets.all(24),
+            child: Center(
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 420),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 32,
+                ),
+                decoration: BoxDecoration(
+                  color: CupertinoColors.systemBackground.resolveFrom(context),
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: CupertinoColors.black.withValues(alpha: 0.08),
+                      blurRadius: 28,
+                      offset: const Offset(0, 14),
+                    ),
+                  ],
+                ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.school_rounded, size: 80, color: Color(0xff1e3c72)),
+                    Container(
+                      width: 92,
+                      height: 92,
+                      decoration: BoxDecoration(
+                        color: CupertinoColors.activeBlue.withValues(
+                          alpha: 0.12,
+                        ),
+                        borderRadius: BorderRadius.circular(28),
+                      ),
+                      child: const Icon(
+                        CupertinoIcons.book_fill,
+                        size: 52,
+                        color: CupertinoColors.activeBlue,
+                      ),
+                    ),
                     const SizedBox(height: 16),
                     const Text(
                       'Bienvenido',
-                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xff1e3c72)),
-                    ),
-                    const Text('Ingresa tus credenciales para continuar', style: TextStyle(color: Colors.grey)),
-                    const SizedBox(height: 32),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Usuario',
-                        prefixIcon: const Icon(Icons.person_outline),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700,
+                        color: CupertinoColors.label,
                       ),
+                    ),
+                    const SizedBox(height: 6),
+                    const Text(
+                      'Ingresa tus credenciales para continuar',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: CupertinoColors.secondaryLabel),
+                    ),
+                    const SizedBox(height: 32),
+                    CupertinoTextField(
+                      placeholder: 'Usuario',
+                      prefix: const Padding(
+                        padding: EdgeInsets.only(left: 12),
+                        child: Icon(
+                          CupertinoIcons.person,
+                          color: CupertinoColors.secondaryLabel,
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 14,
+                      ),
+                      decoration: _fieldDecoration(context),
                     ),
                     const SizedBox(height: 16),
-                    TextField(
+                    CupertinoTextField(
                       obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Contraseña',
-                        prefixIcon: const Icon(Icons.lock_outline),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      placeholder: 'Contrasena',
+                      prefix: const Padding(
+                        padding: EdgeInsets.only(left: 12),
+                        child: Icon(
+                          CupertinoIcons.lock,
+                          color: CupertinoColors.secondaryLabel,
+                        ),
                       ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 14,
+                      ),
+                      decoration: _fieldDecoration(context),
                     ),
                     const SizedBox(height: 32),
                     SizedBox(
                       width: double.infinity,
                       height: 50,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff1e3c72),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      child: CupertinoButton.filled(
+                        borderRadius: BorderRadius.circular(14),
+                        padding: EdgeInsets.zero,
+                        onPressed: () =>
+                            Navigator.pushReplacementNamed(context, '/menu'),
+                        child: const Text(
+                          'Iniciar Sesion',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                        onPressed: () => Navigator.pushReplacementNamed(context, '/menu'),
-                        child: const Text('Iniciar Sesión', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ],
@@ -71,6 +126,16 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  BoxDecoration _fieldDecoration(BuildContext context) {
+    return BoxDecoration(
+      color: CupertinoColors.secondarySystemGroupedBackground.resolveFrom(
+        context,
+      ),
+      borderRadius: BorderRadius.circular(14),
+      border: Border.all(color: CupertinoColors.separator.resolveFrom(context)),
     );
   }
 }

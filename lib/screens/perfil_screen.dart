@@ -1,53 +1,124 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class PerfilScreen extends StatelessWidget {
   const PerfilScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Mi Perfil'), foregroundColor: Colors.white, backgroundColor: const Color(0xff1e3c72)),
-      body: SingleChildScrollView(
-        child: Column(
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(middle: Text('Mi Perfil')),
+      child: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 20, 16, 28),
           children: [
             Container(
-              height: 160,
-              decoration: const BoxDecoration(
-                color: Color(0xff1e3c72),
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+              padding: const EdgeInsets.symmetric(vertical: 28),
+              decoration: BoxDecoration(
+                color: CupertinoColors.secondarySystemGroupedBackground
+                    .resolveFrom(context),
+                borderRadius: BorderRadius.circular(22),
               ),
-              child: const Center(
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.white,
-                  child: Icon(Icons.manage_accounts_rounded, size: 60, color: Color(0xff1e3c72)),
-                ),
+              child: Column(
+                children: [
+                  Container(
+                    width: 104,
+                    height: 104,
+                    decoration: BoxDecoration(
+                      color: CupertinoColors.activeBlue.withValues(alpha: 0.12),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      CupertinoIcons.person_crop_circle_fill,
+                      size: 76,
+                      color: CupertinoColors.activeBlue,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  const Text(
+                    'Hugo',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      color: CupertinoColors.label,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    'Administrador',
+                    style: TextStyle(color: CupertinoColors.secondaryLabel),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 24),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Card(
-                elevation: 3,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                child: const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      ListTile(leading: Icon(Icons.person, color: Color(0xff1e3c72)), title: Text('Nombre'), subtitle: Text('Hugo')),
-                      Divider(),
-                      ListTile(leading: Icon(Icons.cake, color: Color(0xff1e3c72)), title: Text('Edad'), subtitle: Text('38 años')),
-                      Divider(),
-                      ListTile(leading: Icon(Icons.location_on, color: Color(0xff1e3c72)), title: Text('Sede / Ubicación'), subtitle: Text('Nasca')),
-                      Divider(),
-                      ListTile(leading: Icon(Icons.security, color: Color(0xff1e3c72)), title: Text('Rol'), subtitle: Text('Admin')),
-                    ],
-                  ),
+            const SizedBox(height: 18),
+            CupertinoFormSection.insetGrouped(
+              header: const Text('Informacion'),
+              children: const [
+                _ProfileRow(
+                  icon: CupertinoIcons.person,
+                  title: 'Nombre',
+                  value: 'Hugo',
                 ),
-              ),
+                _ProfileRow(
+                  icon: CupertinoIcons.gift,
+                  title: 'Edad',
+                  value: '38 anos',
+                ),
+                _ProfileRow(
+                  icon: CupertinoIcons.location,
+                  title: 'Sede / Ubicacion',
+                  value: 'Nasca',
+                ),
+                _ProfileRow(
+                  icon: CupertinoIcons.shield,
+                  title: 'Rol',
+                  value: 'Admin',
+                ),
+              ],
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ProfileRow extends StatelessWidget {
+  const _ProfileRow({
+    required this.icon,
+    required this.title,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String title;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Row(
+        children: [
+          Icon(icon, color: CupertinoColors.activeBlue),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+                color: CupertinoColors.label,
+              ),
+            ),
+          ),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 16,
+              color: CupertinoColors.secondaryLabel,
+            ),
+          ),
+        ],
       ),
     );
   }

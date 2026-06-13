@@ -1,75 +1,91 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class RegistrarScreen extends StatelessWidget {
   const RegistrarScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Registrar Alumno'), foregroundColor: Colors.white, backgroundColor: const Color(0xff1e3c72)),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Card(
-          elevation: 4,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('Registrar Alumno'),
+      ),
+      child: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 20, 16, 28),
+          children: [
+            CupertinoFormSection.insetGrouped(
+              header: const Text('Datos del estudiante'),
               children: [
-                const Text('Datos del Estudiante', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xff1e3c72))),
-                const SizedBox(height: 20),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Nombre del Alumno',
-                    prefixIcon: const Icon(Icons.badge_outlined),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
+                _buildTextField(
+                  placeholder: 'Nombre del Alumno',
+                  icon: CupertinoIcons.person,
                 ),
-                const SizedBox(height: 16),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Edad',
-                    prefixIcon: const Icon(Icons.calendar_today_outlined),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
+                _buildTextField(
+                  placeholder: 'Edad',
+                  icon: CupertinoIcons.calendar,
                   keyboardType: TextInputType.number,
                 ),
-                const SizedBox(height: 16),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Ciudad de Origen',
-                    prefixIcon: const Icon(Icons.map_outlined),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
-                ),
-                const SizedBox(height: 30),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff00b4db),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                    icon: const Icon(Icons.save_rounded),
-                    label: const Text('GRABAR DATOS', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                    onPressed: () {
-                      // Muestra confirmación en la parte inferior de la pantalla
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('¡Datos Grabados Exitosamente!'),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                    },
-                  ),
+                _buildTextField(
+                  placeholder: 'Ciudad de Origen',
+                  icon: CupertinoIcons.map,
                 ),
               ],
             ),
-          ),
+            const SizedBox(height: 22),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: SizedBox(
+                height: 50,
+                child: CupertinoButton.filled(
+                  borderRadius: BorderRadius.circular(14),
+                  padding: EdgeInsets.zero,
+                  onPressed: () => _showSavedDialog(context),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(CupertinoIcons.check_mark_circled_solid, size: 20),
+                      SizedBox(width: 8),
+                      Text(
+                        'Grabar Datos',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required String placeholder,
+    required IconData icon,
+    TextInputType? keyboardType,
+  }) {
+    return CupertinoTextFormFieldRow(
+      placeholder: placeholder,
+      keyboardType: keyboardType,
+      prefix: Icon(icon, color: CupertinoColors.secondaryLabel),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+    );
+  }
+
+  void _showSavedDialog(BuildContext context) {
+    showCupertinoDialog<void>(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: const Text('Datos grabados'),
+        content: const Text('El registro se guardo exitosamente.'),
+        actions: [
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
       ),
     );
   }
